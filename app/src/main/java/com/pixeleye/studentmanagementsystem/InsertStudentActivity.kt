@@ -33,6 +33,7 @@ class InsertStudentActivity : AppCompatActivity() {
             intent.type = "image/*"
             startActivityForResult(intent, 100)
         }
+
         // Save Contact
         saveButton.setOnClickListener {
             val name = nameInput.text.toString()

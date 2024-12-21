@@ -39,5 +39,45 @@ class DatabaseHelper(context: Context) :SQLiteOpenHelper(context,DATABASE_NAME,n
         return result
     }
 
+    fun getAllContacts(): List<Contact> {
+        val contacts = mutableListOf<Contact>()
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME", null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val contact = Contact(
+                    id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)),
+                    name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME)),
+                    phone = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PHONE)),
+                    imagePath = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE))
+                )
+                contacts.add(contact)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        db.close()
+        return contacts
+    }
+
+    // Update Contact
+    fun updateContact(contact: Contact): Int {
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put(COLUMN_NAME, contact.name)
+        values.put(COLUMN_PHONE, contact.phone)
+        values.put(COLUMN_IMAGE, contact.imagePath)
+        val result = db.update(TABLE_NAME, values, "$COLUMN_ID = ?", arrayOf(contact.id.toString()))
+        db.close()
+        return result
+    }
+
+    // Delete Contact
+    fun deleteContact(contactId: Int): Int {
+        val db = this.writableDatabase
+        val result = db.delete(TABLE_NAME, "$COLUMN_ID = ?", arrayOf(contactId.toString()))
+        db.close()
+        return result
+    }
 
 }
