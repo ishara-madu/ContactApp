@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.pixeleye.studentmanagementsystem"
+    namespace = "com.pixeleye.contact"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.pixeleye.studentmanagementsystem"
+        applicationId = "com.pixeleye.contact"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

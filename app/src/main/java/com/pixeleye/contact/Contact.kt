@@ -1,4 +1,4 @@
-package com.pixeleye.studentmanagementsystem
+package com.pixeleye.contact
 
 data class Contact(
     val id: Int = 0,

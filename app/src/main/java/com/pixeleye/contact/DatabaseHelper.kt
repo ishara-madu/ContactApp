@@ -1,4 +1,4 @@
-package com.pixeleye.studentmanagementsystem
+package com.pixeleye.contact
 
 import android.content.ContentValues
 import android.content.Context
@@ -58,6 +58,32 @@ class DatabaseHelper(context: Context) :SQLiteOpenHelper(context,DATABASE_NAME,n
         cursor.close()
         db.close()
         return contacts
+    }
+
+    fun getContactById(contactId: Int): Contact? {
+        val db = this.readableDatabase
+        val cursor = db.query(
+            TABLE_NAME,
+            arrayOf(COLUMN_ID, COLUMN_NAME, COLUMN_PHONE, COLUMN_IMAGE),
+            "$COLUMN_ID =?",
+            arrayOf(contactId.toString()),
+            null, null, null
+        )
+
+        if (cursor.moveToFirst()) {
+            val contact = Contact(
+                id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)),
+                name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME)),
+                phone = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PHONE)),
+                imagePath = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_IMAGE))
+            )
+            cursor.close()
+            db.close()
+            return contact
+        }
+        cursor.close()
+        db.close()
+        return null
     }
 
     // Update Contact

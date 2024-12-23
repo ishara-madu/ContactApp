@@ -1,10 +1,7 @@
-package com.pixeleye.studentmanagementsystem
+package com.pixeleye.contact
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -27,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         addButton = findViewById(R.id.addButton)
 
         addButton.setOnClickListener{
-            val intent = Intent(this,InsertStudentActivity::class.java)
+            val intent = Intent(this,InsertContactActivity::class.java)
             startActivity(intent)
         }
 

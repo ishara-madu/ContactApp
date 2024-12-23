@@ -1,17 +1,18 @@
-package com.pixeleye.studentmanagementsystem
+package com.pixeleye.contact
 
+import android.content.Intent
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.net.toUri
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 class ContactAdapter(private val contacts: List<Contact>) :
     RecyclerView.Adapter<ContactAdapter.ContactViewHolder>() {
+
 
     class ContactViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.textViewName)
@@ -31,6 +32,13 @@ class ContactAdapter(private val contacts: List<Contact>) :
         val contact = contacts[position]
         holder.name.text = contact.name
         holder.phone.text = contact.phone
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(it.context,EditContactActivity::class.java)
+            intent.putExtra("id",contact.id)
+
+            it.context.startActivity(intent)
+        }
 
         // Set image if imagePath is valid, otherwise use a default image
         fun loadImageFromFilePath(filePath: String, imageView: ImageView) {

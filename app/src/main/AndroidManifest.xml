@@ -14,10 +14,10 @@
         android:theme="@style/Theme.StudentManagementSystem"
         tools:targetApi="31">
         <activity
-            android:name=".EditStudentActivity"
+            android:name=".EditContactActivity"
             android:exported="false" />
         <activity
-            android:name=".InsertStudentActivity"
+            android:name=".InsertContactActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

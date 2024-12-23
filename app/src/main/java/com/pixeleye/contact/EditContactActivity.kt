@@ -1,4 +1,4 @@
-package com.pixeleye.studentmanagementsystem
+package com.pixeleye.contact
 
 import android.app.Activity
 import android.content.Context
@@ -7,7 +7,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -16,53 +15,54 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.pixeleye.contact.databinding.ActivityEditContactBinding
 import java.io.File
 import java.io.FileOutputStream
+import java.util.zip.Inflater
 
-class InsertStudentActivity : AppCompatActivity() {
-    private lateinit var dbHelper: DatabaseHelper
-    private var selectedImagePath: String = ""
+class EditContactActivity : AppCompatActivity() {
+
+    private lateinit var binding:ActivityEditContactBinding
+    private var id: Int? = null
+    private lateinit var selectedImagePath: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_insert_student)
-
-        dbHelper = DatabaseHelper(this)
-
-        val nameInput: EditText = findViewById(R.id.nameInput)
-        val phoneInput: EditText = findViewById(R.id.phoneInput)
-        val profileImage: ImageView = findViewById(R.id.imageView)
-        val selectImage: Button = findViewById(R.id.selectImage)
-        val saveButton: Button = findViewById(R.id.saveButton)
+        binding = ActivityEditContactBinding.inflate(layoutInflater)
+        enableEdgeToEdge()
+        setContentView(binding.root)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.edit)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         // Select Image
-        selectImage.setOnClickListener {
+        binding.editImage.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             startActivityForResult(intent, 100)
         }
-        // Save Contact
-        saveButton.setOnClickListener {
-            val name = nameInput.text.toString()
-            val phone = phoneInput.text.toString()
 
-            if (name.isNotEmpty() && phone.isNotEmpty()) {
-                val contact = Contact(name = name, phone = phone, imagePath = selectedImagePath)
-                val result = dbHelper.addContact(contact)
-                if (result > 0) {
-                    Toast.makeText(this, "Contact saved successfully!", Toast.LENGTH_SHORT).show()
-                    finish()
-                    val intent = Intent(this,MainActivity::class.java)
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(this, "Failed to save contact!", Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                Toast.makeText(this, "All fields are required!", Toast.LENGTH_SHORT).show()
-            }
+        id = intent.getIntExtra("id",0)
+        val dbHelper = DatabaseHelper(this)
+        val contact = dbHelper.getContactById(id!!)
+
+        fun loadImageFromFilePath(filePath: String, imageView: ImageView) {
+            val bitmap = BitmapFactory.decodeFile(filePath)
+            imageView.setImageBitmap(bitmap)
         }
+
+        if (contact?.imagePath!!.isNotEmpty()) {
+            loadImageFromFilePath(contact.imagePath,  binding.editImageView)
+        } else {
+           binding.editImageView.setImageResource(R.drawable.user)
+        }
+
+        binding.editNameInput.setText(contact.name)
+        binding.editPhoneInput.setText(contact.phone)
+
     }
-
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
@@ -155,7 +155,5 @@ class InsertStudentActivity : AppCompatActivity() {
 
         return inSampleSize
     }
-
-
 
 }
