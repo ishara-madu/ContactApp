@@ -41,6 +41,18 @@ class EditContactActivity : AppCompatActivity() {
         val dbHelper = DatabaseHelper(this)
         val contact = dbHelper.getContactById(id)
 
+        if (contact?.imagePath!!.isNotEmpty()) {
+            loadImageFromFilePath(contact.imagePath,  binding.editImageView)
+            selectedImagePath = contact.imagePath
+        } else {
+            binding.editImageView.setImageResource(R.drawable.user)
+        }
+
+        binding.editNameInput.setText(contact.name)
+        binding.editPhoneInput.setText(contact.phone)
+
+
+
         // Select Image
         binding.editImage.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
@@ -68,24 +80,31 @@ class EditContactActivity : AppCompatActivity() {
             }
         }
 
+        binding.deleteButton.setOnClickListener {
+            val delete = dbHelper.deleteContact(id)
 
+            if (delete.toString().isNotEmpty()) {
+                Toast.makeText(this, "Contact deleted successfully!", Toast.LENGTH_SHORT).show()
+                finish()
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "Delete failed!", Toast.LENGTH_SHORT).show()
 
-        fun loadImageFromFilePath(filePath: String, imageView: ImageView) {
-            val bitmap = BitmapFactory.decodeFile(filePath)
-            imageView.setImageBitmap(bitmap)
+            }
         }
 
-        if (contact?.imagePath!!.isNotEmpty()) {
-            loadImageFromFilePath(contact.imagePath,  binding.editImageView)
-            selectedImagePath = contact.imagePath
-        } else {
-           binding.editImageView.setImageResource(R.drawable.user)
-        }
 
-        binding.editNameInput.setText(contact.name)
-        binding.editPhoneInput.setText(contact.phone)
+
+
 
     }
+
+    private fun loadImageFromFilePath(filePath: String, imageView: ImageView) {
+        val bitmap = BitmapFactory.decodeFile(filePath)
+        imageView.setImageBitmap(bitmap)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
