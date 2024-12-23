@@ -18,7 +18,7 @@ class DatabaseHelper(context: Context) :SQLiteOpenHelper(context,DATABASE_NAME,n
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        val createTableQuery = "CREATE TABLE $TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY, $COLUMN_NAME TEXT, $COLUMN_PHONE TEXT, $COLUMN_IMAGE BLOB)"
+        val createTableQuery = "CREATE TABLE $TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY, $COLUMN_NAME TEXT, $COLUMN_PHONE TEXT, $COLUMN_IMAGE TEXT)"
         db?.execSQL(createTableQuery)
     }
 
@@ -79,5 +79,6 @@ class DatabaseHelper(context: Context) :SQLiteOpenHelper(context,DATABASE_NAME,n
         db.close()
         return result
     }
+
 
 }
