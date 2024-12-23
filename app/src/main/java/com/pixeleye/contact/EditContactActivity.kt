@@ -24,8 +24,8 @@ import java.util.zip.Inflater
 class EditContactActivity : AppCompatActivity() {
 
     private lateinit var binding:ActivityEditContactBinding
-    private var id: Int? = null
-    private lateinit var selectedImagePath: String
+    private var id: Int = 0
+    private var selectedImagePath: String? = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditContactBinding.inflate(layoutInflater)
@@ -37,6 +37,10 @@ class EditContactActivity : AppCompatActivity() {
             insets
         }
 
+        id = intent.getIntExtra("id",0)
+        val dbHelper = DatabaseHelper(this)
+        val contact = dbHelper.getContactById(id)
+
         // Select Image
         binding.editImage.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
@@ -44,9 +48,27 @@ class EditContactActivity : AppCompatActivity() {
             startActivityForResult(intent, 100)
         }
 
-        id = intent.getIntExtra("id",0)
-        val dbHelper = DatabaseHelper(this)
-        val contact = dbHelper.getContactById(id!!)
+        // Edit Contact
+        binding.editButton.setOnClickListener {
+            val name = binding.editNameInput.text.toString()
+            val phone = binding.editPhoneInput.text.toString()
+            if (name.isNotEmpty() && phone.isNotEmpty()) {
+                val contact = Contact(id = id,name = name, phone = phone, imagePath = selectedImagePath!!)
+                val result = dbHelper.updateContact(contact)
+                if (result > 0) {
+                    Toast.makeText(this, "Contact edited successfully!", Toast.LENGTH_SHORT).show()
+                    finish()
+                    val intent = Intent(this,MainActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this, "Failed to edit contact!", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(this, "All fields are required!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
 
         fun loadImageFromFilePath(filePath: String, imageView: ImageView) {
             val bitmap = BitmapFactory.decodeFile(filePath)
@@ -55,6 +77,7 @@ class EditContactActivity : AppCompatActivity() {
 
         if (contact?.imagePath!!.isNotEmpty()) {
             loadImageFromFilePath(contact.imagePath,  binding.editImageView)
+            selectedImagePath = contact.imagePath
         } else {
            binding.editImageView.setImageResource(R.drawable.user)
         }
@@ -69,8 +92,7 @@ class EditContactActivity : AppCompatActivity() {
             val uri = data?.data
             uri?.let {
                 // Show the selected image
-                val profileImage: ImageView = findViewById(R.id.imageView)
-                profileImage.setImageURI(uri)
+                binding.editImageView.setImageURI(uri)
 
                 // Save the image to internal storage and get the file path
                 val filePath = saveImageToFile(this, uri, "profile_image_${System.currentTimeMillis()}.png")

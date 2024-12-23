@@ -78,7 +78,7 @@
             android:id="@+id/editButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save Contact"
+            android:text="Edit Contact"
             android:textColor="@color/white"
             android:background="@android:color/holo_blue_dark"
             android:layout_marginTop="20dp"
