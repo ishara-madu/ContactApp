@@ -94,8 +94,8 @@ class InsertContactActivity : AppCompatActivity() {
             }
 
             // Calculate the sample size (scale factor) to downsize the image
-            val requiredWidth = 80  // Desired width
-            val requiredHeight = 80  // Desired height
+            val requiredWidth = 300  // Desired width
+            val requiredHeight = 300  // Desired height
             val scaleFactor = calculateInSampleSize(options, requiredWidth, requiredHeight)
 
             // Now decode the image with the correct sample size
@@ -118,7 +118,7 @@ class InsertContactActivity : AppCompatActivity() {
             val outputStream = FileOutputStream(file)
 
             // Compress the bitmap to reduce its quality (e.g., 80% quality)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 40, outputStream) // Adjust the quality (0 to 100)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream) // Adjust the quality (0 to 100)
             outputStream.flush()
             outputStream.close()
 

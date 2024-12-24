@@ -29,13 +29,8 @@ class EditContactActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditContactBinding.inflate(layoutInflater)
-        enableEdgeToEdge()
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.edit)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
 
         id = intent.getIntExtra("id",0)
         val dbHelper = DatabaseHelper(this)
@@ -139,8 +134,8 @@ class EditContactActivity : AppCompatActivity() {
             }
 
             // Calculate the sample size (scale factor) to downsize the image
-            val requiredWidth = 80  // Desired width
-            val requiredHeight = 80  // Desired height
+            val requiredWidth = 300  // Desired width
+            val requiredHeight = 300  // Desired height
             val scaleFactor = calculateInSampleSize(options, requiredWidth, requiredHeight)
 
             // Now decode the image with the correct sample size
@@ -163,7 +158,7 @@ class EditContactActivity : AppCompatActivity() {
             val outputStream = FileOutputStream(file)
 
             // Compress the bitmap to reduce its quality (e.g., 80% quality)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 40, outputStream) // Adjust the quality (0 to 100)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream) // Adjust the quality (0 to 100)
             outputStream.flush()
             outputStream.close()
 

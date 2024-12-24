@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".InsertContactActivity"
     >
 
     <LinearLayout
@@ -28,13 +29,14 @@
 
         <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/imageView"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="300px"
+                android:layout_height="300px"
                 android:layout_gravity="center"
                 android:scaleType="centerCrop"
                 android:contentDescription="Profile Image"
                 app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
                 android:layout_marginBottom="10dp"
+            android:background="@drawable/round_frame"
                 android:src="@drawable/user" />
 
 
@@ -45,7 +47,6 @@
             android:text="Select Image"
             android:textColor="@color/white"
             android:layout_gravity="center"
-            android:background="@android:color/holo_blue_dark"
             />
 
         <!-- Name Field with Icon -->

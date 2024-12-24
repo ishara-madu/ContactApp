@@ -4,8 +4,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".EditContactActivity"
         >
 
@@ -37,8 +37,9 @@
             android:contentDescription="Profile Image"
             app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
             android:layout_marginBottom="10dp"
-            android:src="@drawable/user" />
-
+            android:src="@drawable/user"
+            android:background="@drawable/round_frame"
+            />
 
         <Button
             android:id="@+id/editImage"
@@ -47,7 +48,6 @@
             android:text="Change Image"
             android:textColor="@color/white"
             android:layout_gravity="center"
-            android:background="@android:color/holo_blue_dark"
             />
 
         <!-- Name Field with Icon -->
