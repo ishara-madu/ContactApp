@@ -8,7 +8,6 @@
     tools:context=".MainActivity">
 
 
-
     <TextView
         android:id="@+id/contactListTitle"
         android:layout_width="match_parent"
@@ -20,6 +19,18 @@
         android:layout_marginVertical="16dp"
         />
 
+    <TextView
+        android:id="@+id/emptyText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No Contact"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:textColor="#908F8F"
+        android:layout_centerInParent="true"
+        />
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_below="@+id/contactListTitle"
         android:id="@+id/recyclerView"
@@ -27,17 +38,7 @@
         android:layout_height="match_parent"
         tools:listitem="@layout/item_contact" />
 
-    <TextView
-        android:id="@+id/emptyText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="No Contacts"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:textColor="#BAB9B9"
-        android:textSize="18dp"
-        />
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addButton"
