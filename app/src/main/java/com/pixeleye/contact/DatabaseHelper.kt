@@ -18,6 +18,7 @@ class DatabaseHelper(context: Context) :SQLiteOpenHelper(context,DATABASE_NAME,n
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
+
         val createTableQuery = "CREATE TABLE $TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY, $COLUMN_NAME TEXT, $COLUMN_PHONE TEXT, $COLUMN_IMAGE TEXT)"
         db?.execSQL(createTableQuery)
     }
@@ -28,7 +29,7 @@ class DatabaseHelper(context: Context) :SQLiteOpenHelper(context,DATABASE_NAME,n
     }
 
     // Add Contact
-    fun addContact(contact: Contact): Long {
+    fun addContact(contact: Contact): Long{
         val db = this.writableDatabase
         val values = ContentValues()
         values.put(COLUMN_NAME, contact.name)

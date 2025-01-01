@@ -13,8 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var addButton:FloatingActionButton
-    private lateinit var emptyText:TextView
+    private lateinit var addButton: FloatingActionButton
+    private lateinit var emptyText: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -23,25 +24,11 @@ class MainActivity : AppCompatActivity() {
         emptyText = findViewById(R.id.emptyText)
         emptyText.visibility = View.GONE
 
-        addButton.setOnClickListener{
-            val intent = Intent(this,InsertContactActivity::class.java)
+        addButton.setOnClickListener {
+            val intent = Intent(this, InsertContactActivity::class.java)
             startActivity(intent)
         }
-
         setList()
-
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-
-
-    }
-
-
-//    Update contact list
-    override fun onResume() {
-        super.onResume()
-    setList()
     }
 
     private fun setList() {
@@ -51,11 +38,18 @@ class MainActivity : AppCompatActivity() {
         val dbHelper = DatabaseHelper(this)
         val contacts = dbHelper.getAllContacts()
 
-        if (contacts.isEmpty()){
-            emptyText.visibility = View.VISIBLE
-        }
-
         val adapter = ContactAdapter(contacts)
         recyclerView.adapter = adapter
+
+
+        if (contacts.isEmpty()) {
+            emptyText.visibility = View.VISIBLE
+        }
+    }
+
+    //    Update contact list
+    override fun onResume() {
+        super.onResume()
+        setList()
     }
 }

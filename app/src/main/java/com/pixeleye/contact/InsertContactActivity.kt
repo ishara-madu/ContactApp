@@ -26,23 +26,16 @@ class InsertContactActivity : AppCompatActivity() {
 
         val nameInput: EditText = findViewById(R.id.nameInput)
         val phoneInput: EditText = findViewById(R.id.phoneInput)
-        val profileImage: ImageView = findViewById(R.id.imageView)
-        val selectImage: Button = findViewById(R.id.selectImage)
+        val selectImageButton: Button = findViewById(R.id.selectImage)
         val saveButton: Button = findViewById(R.id.saveButton)
 
-        // Select Image
-        selectImage.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            startActivityForResult(intent, 100)
-        }
         // Save Contact
         saveButton.setOnClickListener {
             val name = nameInput.text.toString()
             val phone = phoneInput.text.toString()
 
             if (name.isNotEmpty() && phone.isNotEmpty()) {
-                val contact = Contact(name = name, phone = phone, imagePath = selectedImagePath)
+                val contact = Contact(id = 0,name = name, phone = phone, imagePath = selectedImagePath)
                 val result = dbHelper.addContact(contact)
                 if (result > 0) {
                     Toast.makeText(this, "Contact saved successfully!", Toast.LENGTH_SHORT).show()
@@ -55,6 +48,14 @@ class InsertContactActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "All fields are required!", Toast.LENGTH_SHORT).show()
             }
+        }
+
+
+        // Select Image
+        selectImageButton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityIfNeeded(intent, 100)
         }
     }
 

@@ -23,7 +23,7 @@ import java.util.zip.Inflater
 
 class EditContactActivity : AppCompatActivity() {
 
-    private lateinit var binding:ActivityEditContactBinding
+    private lateinit var binding: ActivityEditContactBinding
     private var id: Int = 0
     private var selectedImagePath: String? = ""
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,13 +31,12 @@ class EditContactActivity : AppCompatActivity() {
         binding = ActivityEditContactBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-        id = intent.getIntExtra("id",0)
+        id = intent.getIntExtra("id", 0)
         val dbHelper = DatabaseHelper(this)
         val contact = dbHelper.getContactById(id)
 
         if (contact?.imagePath!!.isNotEmpty()) {
-            loadImageFromFilePath(contact.imagePath,  binding.editImageView)
+            loadImageFromFilePath(contact.imagePath, binding.editImageView)
             selectedImagePath = contact.imagePath
         } else {
             binding.editImageView.setImageResource(R.drawable.user)
@@ -45,8 +44,6 @@ class EditContactActivity : AppCompatActivity() {
 
         binding.editNameInput.setText(contact.name)
         binding.editPhoneInput.setText(contact.phone)
-
-
 
         // Select Image
         binding.editImage.setOnClickListener {
@@ -60,12 +57,13 @@ class EditContactActivity : AppCompatActivity() {
             val name = binding.editNameInput.text.toString()
             val phone = binding.editPhoneInput.text.toString()
             if (name.isNotEmpty() && phone.isNotEmpty()) {
-                val contact = Contact(id = id,name = name, phone = phone, imagePath = selectedImagePath!!)
+                val contact =
+                    Contact(id = id, name = name, phone = phone, imagePath = selectedImagePath!!)
                 val result = dbHelper.updateContact(contact)
                 if (result > 0) {
                     Toast.makeText(this, "Contact edited successfully!", Toast.LENGTH_SHORT).show()
                     finish()
-                    val intent = Intent(this,MainActivity::class.java)
+                    val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                 } else {
                     Toast.makeText(this, "Failed to edit contact!", Toast.LENGTH_SHORT).show()
@@ -75,7 +73,9 @@ class EditContactActivity : AppCompatActivity() {
             }
         }
 
-        binding.deleteButton.setOnClickListener {
+        val deleteButton: FloatingActionButton = findViewById(R.id.deleteButton)
+
+        deleteButton.setOnClickListener {
             val delete = dbHelper.deleteContact(id)
 
             if (delete.toString().isNotEmpty()) {
@@ -88,9 +88,6 @@ class EditContactActivity : AppCompatActivity() {
 
             }
         }
-
-
-
 
 
     }
@@ -109,7 +106,8 @@ class EditContactActivity : AppCompatActivity() {
                 binding.editImageView.setImageURI(uri)
 
                 // Save the image to internal storage and get the file path
-                val filePath = saveImageToFile(this, uri, "profile_image_${System.currentTimeMillis()}.png")
+                val filePath =
+                    saveImageToFile(this, uri, "profile_image_${System.currentTimeMillis()}.png")
 
 //                 Store the file path in the database
                 if (filePath != null) {
@@ -125,7 +123,8 @@ class EditContactActivity : AppCompatActivity() {
         return try {
             // First, get the dimensions of the image without loading it fully into memory
             val options = BitmapFactory.Options().apply {
-                inJustDecodeBounds = true  // This will load only the image's dimensions, not the whole bitmap
+                inJustDecodeBounds =
+                    true  // This will load only the image's dimensions, not the whole bitmap
             }
 
             // Decode the image file to get its dimensions
@@ -158,7 +157,11 @@ class EditContactActivity : AppCompatActivity() {
             val outputStream = FileOutputStream(file)
 
             // Compress the bitmap to reduce its quality (e.g., 80% quality)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream) // Adjust the quality (0 to 100)
+            bitmap.compress(
+                Bitmap.CompressFormat.JPEG,
+                80,
+                outputStream
+            ) // Adjust the quality (0 to 100)
             outputStream.flush()
             outputStream.close()
 
@@ -170,7 +173,11 @@ class EditContactActivity : AppCompatActivity() {
         }
     }
 
-    private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+    private fun calculateInSampleSize(
+        options: BitmapFactory.Options,
+        reqWidth: Int,
+        reqHeight: Int
+    ): Int {
         // Raw width and height of image
         val height = options.outHeight
         val width = options.outWidth

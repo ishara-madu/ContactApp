@@ -14,8 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 
 class ContactAdapter(private val contacts: List<Contact>) :
     RecyclerView.Adapter<ContactAdapter.ContactViewHolder>() {
-
-
     class ContactViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.textViewName)
         val phone: TextView = itemView.findViewById(R.id.textViewPhone)
@@ -30,7 +28,6 @@ class ContactAdapter(private val contacts: List<Contact>) :
         }
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_contact, parent, false)
@@ -42,11 +39,9 @@ class ContactAdapter(private val contacts: List<Contact>) :
         holder.name.text = contact.name
         holder.phone.text = contact.phone
 
-
         holder.itemView.setOnClickListener {
             val intent = Intent(it.context,EditContactActivity::class.java)
             intent.putExtra("id",contact.id)
-
             it.context.startActivity(intent)
         }
 
